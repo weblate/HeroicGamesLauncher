@@ -4,26 +4,31 @@ import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 import path from 'path'
 
+const aliases = [
+  {
+    find: '~@fontsource',
+    replacement: path.resolve(__dirname, 'node_modules/@fontsource')
+  },
+  {
+    find: 'backend',
+    replacement: path.resolve(__dirname, './src/backend')
+  },
+  {
+    find: 'frontend',
+    replacement: path.resolve(__dirname, './src/frontend')
+  },
+  {
+    find: 'common',
+    replacement: path.resolve(__dirname, './src/common')
+  }
+]
+
 export default defineConfig({
   build: {
     outDir: 'build'
   },
   resolve: {
-    alias: [
-      {
-        find: '~@fontsource',
-        replacement: path.resolve(__dirname, 'node_modules/@fontsource')
-      },
-      {
-        find: 'backend',
-        replacement: path.resolve(__dirname, './src/backend')
-      },
-      {
-        find: 'frontend',
-        replacement: path.resolve(__dirname, './src/frontend')
-      },
-      { find: 'common', replacement: path.resolve(__dirname, './src/common') }
-    ]
+    alias: aliases
   },
   plugins: [
     react(),
@@ -32,24 +37,7 @@ export default defineConfig({
         entry: 'src/backend/main.ts',
         vite: {
           resolve: {
-            alias: [
-              {
-                find: '~@fontsource',
-                replacement: path.resolve(__dirname, 'node_modules/@fontsource')
-              },
-              {
-                find: 'backend',
-                replacement: path.resolve(__dirname, './src/backend')
-              },
-              {
-                find: 'frontend',
-                replacement: path.resolve(__dirname, './src/frontend')
-              },
-              {
-                find: 'common',
-                replacement: path.resolve(__dirname, './src/common')
-              }
-            ]
+            alias: aliases
           }
         }
       },
