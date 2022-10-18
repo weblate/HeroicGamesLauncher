@@ -14,7 +14,15 @@ export default defineConfig({
         find: '~@fontsource',
         replacement: path.resolve(__dirname, 'node_modules/@fontsource')
       },
-      { find: '@@', replacement: path.resolve(__dirname, './src') }
+      {
+        find: 'backend',
+        replacement: path.resolve(__dirname, './src/backend')
+      },
+      {
+        find: 'frontend',
+        replacement: path.resolve(__dirname, './src/frontend')
+      },
+      { find: 'common', replacement: path.resolve(__dirname, './src/common') }
     ]
   },
   plugins: [
@@ -29,7 +37,18 @@ export default defineConfig({
                 find: '~@fontsource',
                 replacement: path.resolve(__dirname, 'node_modules/@fontsource')
               },
-              { find: '@@', replacement: path.resolve(__dirname, './src') }
+              {
+                find: 'backend',
+                replacement: path.resolve(__dirname, './src/backend')
+              },
+              {
+                find: 'frontend',
+                replacement: path.resolve(__dirname, './src/frontend')
+              },
+              {
+                find: 'common',
+                replacement: path.resolve(__dirname, './src/common')
+              }
             ]
           }
         }
