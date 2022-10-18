@@ -4,24 +4,12 @@ import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 import path from 'path'
 
-const aliases = [
-  {
-    find: '~@fontsource',
-    replacement: path.resolve(__dirname, 'node_modules/@fontsource')
-  },
-  {
-    find: 'backend',
-    replacement: path.resolve(__dirname, './src/backend')
-  },
-  {
-    find: 'frontend',
-    replacement: path.resolve(__dirname, './src/frontend')
-  },
-  {
-    find: 'common',
-    replacement: path.resolve(__dirname, './src/common')
+const aliases = ['backend', 'frontend', 'common'].map((srcFolder) => {
+  return {
+    find: srcFolder,
+    replacement: path.resolve(__dirname, `./src/${srcFolder}`)
   }
-]
+})
 
 export default defineConfig({
   build: {
