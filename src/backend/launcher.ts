@@ -193,12 +193,14 @@ async function prepareWineLaunch(
     }
   }
 
-  const { updated: winePrefixUpdated } = await verifyWinePrefix(gameSettings)
-  if (winePrefixUpdated) {
-    logInfo(['Created/Updated Wineprefix at', gameSettings.winePrefix], {
-      prefix: LogPrefix.Backend
-    })
-    await setup(game.appName)
+  if (!isValidPrefix(gameSettings)) {
+    const { updated: winePrefixUpdated } = await verifyWinePrefix(gameSettings)
+    if (winePrefixUpdated) {
+      logInfo(['Created/Updated Wineprefix at', gameSettings.winePrefix], {
+        prefix: LogPrefix.Backend
+      })
+      await setup(game.appName)
+    }
   }
 
   // If DXVK/VKD3D installation is enabled, install it
