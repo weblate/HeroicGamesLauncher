@@ -409,7 +409,7 @@ class GOGGame extends Game {
         success: wineLaunchPrepSuccess,
         failureReason: wineLaunchPrepFailReason,
         envVars: wineEnvVars
-      } = await prepareWineLaunch(this)
+      } = await prepareWineLaunch(this, 'gog')
       if (!wineLaunchPrepSuccess) {
         appendFileSync(
           this.logFileLocation,

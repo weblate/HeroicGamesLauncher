@@ -1,11 +1,27 @@
+import { Workaround } from './../wine/workarounds/types'
 import { ipcRenderer } from 'electron'
-import { RuntimeName, ToolArgs, WineVersionInfo } from 'common/types'
+import { Runner, RuntimeName, WineVersionInfo } from 'common/types'
 import { ProgressInfo, State } from 'heroic-wine-downloader'
 
-export const toggleDXVK = async (args: ToolArgs) =>
-  ipcRenderer.invoke('toggleDXVK', args)
-export const toggleVKD3D = (args: ToolArgs) =>
-  ipcRenderer.send('toggleVKD3D', args)
+export const installWorkaround = async (
+  workaround: Workaround,
+  appName: string,
+  runner: Runner
+) => ipcRenderer.invoke('installWorkaround', workaround, appName, runner)
+export const removeWorkaround = async (
+  workaround: Workaround,
+  appName: string,
+  runner: Runner
+) => ipcRenderer.invoke('removeWorkaround', workaround, appName, runner)
+export const isWorkaroundInstalled = async (
+  workaround: Workaround,
+  appName: string,
+  runner: Runner
+) => ipcRenderer.invoke('isWorkaroundInstalled', workaround, appName, runner)
+
+export const hasValidPrefix = async (appName: string, runner: Runner) =>
+  ipcRenderer.invoke('hasValidPrefix', appName, runner)
+
 export const isFlatpak = async (): Promise<boolean> =>
   ipcRenderer.invoke('isFlatpak')
 export const isRuntimeInstalled = async (

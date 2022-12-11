@@ -609,3 +609,15 @@ export interface ToolArgs {
 }
 
 export type StatusPromise = Promise<{ status: 'done' | 'error' }>
+
+export type PartialRelease = {
+  tag_name: string
+  assets: unknown[]
+  [key: string]: unknown
+}
+export type PartialAsset = {
+  name: string
+  browser_download_url: string
+  content_type: string
+  [key: string]: unknown
+}

@@ -1,6 +1,12 @@
 import { EventEmitter } from 'node:events'
 import { IpcMainEvent, OpenDialogOptions } from 'electron'
 import { HowLongToBeatEntry } from 'howlongtobeat'
+import {
+  Workaround,
+  InstallParams as WorkaroundInstallParams,
+  RemoveParams,
+  IsInstalledParams
+} from 'backend/wine/workarounds/types'
 
 import {
   Runner,
@@ -14,7 +20,6 @@ import {
   UserInfo,
   WineInstallation,
   AppSettings,
-  ToolArgs,
   LaunchParams,
   InstallParams,
   MoveGameArgs,
@@ -70,7 +75,6 @@ interface SyncIPCFunctions {
   resetHeroic: () => void
   createNewWindow: (url: string) => void
   logoutGOG: () => void
-  toggleVKD3D: (args: ToolArgs) => void
   logError: (message: unknown) => void
   logInfo: (message: unknown) => void
   showItemInFolder: (item: string) => void
@@ -223,7 +227,25 @@ interface AsyncIPCFunctions {
     appName: string
     runner: Runner
   }) => Promise<boolean>
-  toggleDXVK: (args: ToolArgs) => Promise<boolean>
+  installWorkaround: <T extends Workaround>(
+    workaround: T,
+    appName: string,
+    runner: Runner,
+    ...args: WorkaroundInstallParams<T>
+  ) => Promise<boolean>
+  removeWorkaround: <T extends Workaround>(
+    workaround: T,
+    appName: string,
+    runner: Runner,
+    ...args: RemoveParams<T>
+  ) => Promise<boolean>
+  isWorkaroundInstalled: <T extends Workaround>(
+    workaround: T,
+    appName: string,
+    runner: Runner,
+    ...args: IsInstalledParams<T>
+  ) => Promise<boolean>
+  hasValidPrefix: (appName: string, runner: Runner) => Promise<boolean>
 }
 
 // This is quite ugly & throws a lot of errors in a regular .ts file

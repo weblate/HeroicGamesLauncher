@@ -704,7 +704,7 @@ class LegendaryGame extends Game {
         success: wineLaunchPrepSuccess,
         failureReason: wineLaunchPrepFailReason,
         envVars: wineEnvVars
-      } = await prepareWineLaunch(this)
+      } = await prepareWineLaunch(this, 'legendary')
       if (!wineLaunchPrepSuccess) {
         appendFileSync(
           this.logFileLocation,
