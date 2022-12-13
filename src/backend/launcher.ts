@@ -574,8 +574,7 @@ async function runWineCommand({
   const { wineVersion, winePrefix } = settings
 
   if (!skipPrefixCheckIKnowWhatImDoing) {
-    const validPrefix = isValidPrefix(settings)
-    if (!validPrefix) {
+    if (!isValidPrefix(settings)) {
       logWarning(
         'Required prefix files are missing, running `verifyWinePrefix` to create prefix',
         { prefix: LogPrefix.Backend }

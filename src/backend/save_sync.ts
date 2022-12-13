@@ -1,3 +1,4 @@
+import { isValidPrefix } from 'backend/launcher'
 import { Runner } from 'common/types'
 import { GOGCloudSavesLocation, SaveFolderVariable } from 'common/types/gog'
 import { getWinePath, setupWineEnvVars, verifyWinePrefix } from './launcher'
@@ -66,8 +67,9 @@ async function getDefaultLegendarySavePath(appName: string): Promise<string> {
     }
   }
 
-  if (!game.isNative()) {
-    await verifyWinePrefix(await game.getSettings())
+  const settings = await game.getSettings()
+  if (!game.isNative() && !isValidPrefix(settings)) {
+    await verifyWinePrefix(settings)
   }
 
   logInfo(['Computing default save path for', appName], {
@@ -85,7 +87,7 @@ async function getDefaultLegendarySavePath(appName: string): Promise<string> {
     createAbortController(abortControllerName),
     {
       logMessagePrefix: 'Getting default save path',
-      env: game.isNative() ? {} : setupWineEnvVars(await game.getSettings())
+      env: game.isNative() ? {} : setupWineEnvVars(settings)
     }
   )
   deleteAbortController(abortControllerName)
