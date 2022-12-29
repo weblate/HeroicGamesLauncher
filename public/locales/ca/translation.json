@@ -48,10 +48,6 @@
                 "message": "No hi ha prou espai al disc",
                 "title": "No hi ha espai"
             },
-            "dxvk": {
-                "message": "Hi ha hagut un error en instal·lar el DXVK/VKD3D. Comproveu la connexió.",
-                "title": "Error del DXVK/VKD3D"
-            },
             "folder-not-found": {
                 "title": "La carpeta del joc sembla que s'ha esborrat. Vols treure el joc de la llista de jocs instal·lats?"
             },
@@ -147,6 +143,7 @@
     },
     "button": {
         "cancel": "Cancel·la",
+        "continue": "Continue",
         "go_to_library": "Vés a la biblioteca",
         "login": "Inicia la sessió",
         "sync": "Sincronitza",
@@ -198,6 +195,10 @@
     },
     "Epic Games": "Epic Games",
     "error": "Error",
+    "externalLink": {
+        "dontAskAgain": "Don't ask again",
+        "warning": "You are about to open an external link."
+    },
     "favourites": "Preferits",
     "game": {
         "status": "Estat",
