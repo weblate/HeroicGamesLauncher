@@ -4,10 +4,10 @@ import { writeFileSync } from 'graceful-fs'
 import { exec, spawn } from 'child_process'
 
 import { execAsync, getWineFromProton } from './utils'
-import { execOptions, heroicToolsPath, isLinux } from './constants'
+import { execOptions, heroicToolsPath, isLinux, isMac } from './constants'
 import { logError, logInfo, LogPrefix, logWarning } from './logger/logger'
 import i18next from 'i18next'
-import { dirname } from 'path'
+import { dirname, join } from 'path'
 import { isOnline } from './online_monitor'
 import { showDialogBoxModalAuto } from './dialog/dialog'
 import { validWine } from './launcher'
@@ -18,8 +18,11 @@ export const Winetricks = {
       return
     }
 
-    const url =
+    const linuxUrl =
       'https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks'
+    const macUrl =
+      'https://raw.githubusercontent.com/The-Wineskin-Project/winetricks/macOS/src/winetricks'
+    const url = isMac ? macUrl : linuxUrl
     const path = `${heroicToolsPath}/winetricks`
 
     if (!isOnline()) {
@@ -57,11 +60,24 @@ export const Winetricks = {
 
       const winepath = dirname(wineBin)
 
-      const envs = {
+      const linuxEnvs = {
         ...process.env,
         WINEPREFIX: winePrefix,
         PATH: `${winepath}:${process.env.PATH}`
       }
+
+      const wineServer = join(winepath, 'wineserver')
+
+      const macEnvs = {
+        ...process.env,
+        WINEPREFIX: winePrefix,
+        WINESERVER: wineServer,
+        WINE: wineBin,
+        WINE64: wineBin,
+        PATH: `/opt/homebrew/bin:${process.env.PATH}`
+      }
+
+      const envs = isMac ? macEnvs : linuxEnvs
 
       const executeMessages = [] as string[]
       let progressUpdated = false
@@ -82,17 +98,10 @@ export const Winetricks = {
       }, 1000)
 
       // check if winetricks dependencies are installed
-      const dependencies = [
-        '7z',
-        'cabextract',
-        'zenity',
-        'unzip',
-        'curl',
-        'wine'
-      ]
+      const dependencies = ['7z', 'cabextract', 'zenity', 'unzip', 'curl']
       dependencies.forEach(async (dependency) => {
         try {
-          await execAsync(`which ${dependency}`, execOptions)
+          await execAsync(`which ${dependency}`, { ...execOptions, env: envs })
         } catch (error) {
           appendMessage(
             `${dependency} not installed! Winetricks might fail to install some packages or even open`

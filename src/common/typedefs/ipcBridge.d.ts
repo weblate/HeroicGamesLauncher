@@ -35,7 +35,8 @@ import {
   DMQueueElement,
   ConnectivityStatus,
   GamepadActionArgs,
-  ExecResult
+  ExecResult,
+  ExtraInfo
 } from 'common/types'
 import { LegendaryInstallInfo } from 'common/types/legendary'
 import { GOGCloudSavesLocation, GogInstallInfo } from 'common/types/gog'
@@ -53,6 +54,7 @@ interface SyncIPCFunctions {
   changeLanguage: (language: string) => void
   notify: (args: { title: string; body: string }) => void
   frontendReady: () => void
+  loadingScreenReady: () => void
   lock: () => void
   unlock: () => void
   quit: () => void
@@ -118,6 +120,7 @@ interface AsyncIPCFunctions {
   getLatestReleases: () => Promise<Release[]>
   getCurrentChangelog: () => Promise<Release | null>
   getGameInfo: (appName: string, runner: Runner) => Promise<GameInfo | null>
+  getExtraInfo: (appName: string, runner: Runner) => Promise<ExtraInfo | null>
   getGameSettings: (
     appName: string,
     runner: Runner
@@ -155,7 +158,8 @@ interface AsyncIPCFunctions {
   uninstall: (
     appName: string,
     runner: Runner,
-    shouldRemovePrefix: boolean
+    shouldRemovePrefix: boolean,
+    shoudlRemoveSetting: boolean
   ) => Promise<void>
   repair: (appName: string, runner: Runner) => Promise<void>
   moveInstall: (args: MoveGameArgs) => StatusPromise
