@@ -138,7 +138,6 @@ import {
 import { callAbortController } from './utils/aborthandler/aborthandler'
 import { getDefaultSavePath } from './save_sync'
 import si from 'systeminformation'
-import WorkaroundsManager from './wine/workarounds/manager'
 
 const { showOpenDialog } = dialog
 const isWindows = platform() === 'win32'
@@ -940,29 +939,6 @@ ipcMain.handle('requestSettings', async (event, appName) => {
   return mapOtherSettings(config)
 })
 
-ipcMain.handle(
-  'installWorkaround',
-  async (e, workaround, appName, runner, ...args) =>
-    WorkaroundsManager.install(
-      workaround,
-      appName,
-      runner,
-      ...(args as [never])
-    )
-)
-
-ipcMain.handle(
-  'removeWorkaround',
-  async (e, workaround, appName, runner, ...args) =>
-    WorkaroundsManager.remove(workaround, appName, runner, ...args)
-)
-
-ipcMain.handle(
-  'isWorkaroundInstalled',
-  async (e, workaround, appName, runner, ...args) =>
-    WorkaroundsManager.isInstalled(workaround, appName, runner, ...args)
-)
-
 ipcMain.handle('hasValidPrefix', async (e, appName, runner) => {
   const gameSettings =
     runner === 'sideload'
@@ -1641,6 +1617,7 @@ import './wine/runtimes/ipc_handler'
 import './downloadmanager/ipc_handler'
 import './utils/ipc_handler'
 import './howlongtobeat/ipc_handler'
+import './wine/workarounds/ipc_handler'
 
 // import Store from 'electron-store'
 // interface StoreMap {
