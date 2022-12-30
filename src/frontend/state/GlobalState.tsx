@@ -541,7 +541,7 @@ export class GlobalState extends PureComponent<Props> {
     }
 
     // if the app is done installing or errored
-    if (['error', 'done'].includes(status)) {
+    if (['error', 'done', 'playing'].includes(status)) {
       // if the app was updating, remove from the available game updates
       newLibraryStatus = libraryStatus.filter(
         (game) => game.appName !== appName
@@ -628,8 +628,7 @@ export class GlobalState extends PureComponent<Props> {
     })
 
     window.api.handleGameStatus(async (e: Event, args: GameStatus) => {
-      const { libraryStatus } = this.state
-      return this.handleGameStatus({ ...libraryStatus, ...args })
+      return this.handleGameStatus({ ...args })
     })
 
     window.api.handleRefreshLibrary(async (e: Event, runner: Runner) => {
@@ -740,7 +739,6 @@ export class GlobalState extends PureComponent<Props> {
             logout: this.gogLogout
           },
           handleCategory: this.handleCategory,
-          handleGameStatus: this.handleGameStatus,
           handleLayout: this.handleLayout,
           handlePlatformFilter: this.handlePlatformFilter,
           handleSearch: this.handleSearch,

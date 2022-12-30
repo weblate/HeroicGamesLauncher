@@ -27,7 +27,7 @@ import { GlobalConfig } from '../../config'
 import { getMainWindow } from '../../main_window'
 
 const getSteamUserdataDir = async () => {
-  const { defaultSteamPath } = await GlobalConfig.get().getSettings()
+  const { defaultSteamPath } = GlobalConfig.get().getSettings()
   return join(defaultSteamPath.replaceAll("'", ''), 'userdata')
 }
 
@@ -455,13 +455,13 @@ async function removeNonSteamGame(props: {
     })
   }
 
-  // game was not on any steam shortcut
-  // nothing to notify
-  if (!removed) {
-    return
-  }
-
   if (errors.length === 0) {
+    // game was not on any steam shortcut
+    // nothing to notify
+    if (!removed) {
+      return
+    }
+
     logInfo(`${props.gameInfo.title} was successfully removed from Steam.`, {
       prefix: LogPrefix.Shortcuts
     })

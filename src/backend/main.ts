@@ -181,7 +181,7 @@ async function initializeWindow(): Promise<BrowserWindow> {
       configStore.set('window-props', mainWindow.getBounds())
     }
 
-    const { exitToTray } = GlobalConfig.get().config
+    const { exitToTray } = GlobalConfig.get().getSettings()
 
     if (exitToTray) {
       logInfo('Exitting to tray instead of quitting', {
@@ -272,10 +272,10 @@ if (!gotTheLock) {
     logInfo(['GOGDL location:', join(...Object.values(getGOGdlBin()))], {
       prefix: LogPrefix.Gog
     })
-    // We can't use .config since apparently its not loaded fast enough.
+
     // TODO: Remove this after a couple of stable releases
     // Affects only current users, not new installs
-    const settings = await GlobalConfig.get().getSettings()
+    const settings = GlobalConfig.get().getSettings()
     const { language } = settings
     const currentConfigStore = configStore.get('settings', {}) as AppSettings
     if (!currentConfigStore.defaultInstallPath) {
@@ -305,6 +305,8 @@ if (!gotTheLock) {
         loadPath: path.join(publicDir, 'locales', '{{lng}}', '{{ns}}.json')
       },
       debug: false,
+      returnEmptyString: false,
+      returnNull: false,
       fallbackLng: 'en',
       lng: language,
       supportedLngs: [
@@ -368,7 +370,7 @@ if (!gotTheLock) {
       logWarning('Protocol already registered.', { prefix: LogPrefix.Backend })
     }
 
-    const { startInTray } = await GlobalConfig.get().getSettings()
+    const { startInTray } = GlobalConfig.get().getSettings()
     const headless = isCLINoGui || startInTray
     if (!headless) {
       ipcMain.once('loadingScreenReady', () => mainWindow.show())
@@ -541,7 +543,7 @@ ipcMain.on('showConfigFileInFolder', async (event, appName) => {
 
 ipcMain.on('removeFolder', async (e, [path, folderName]) => {
   if (path === 'default') {
-    const { defaultInstallPath } = await GlobalConfig.get().getSettings()
+    const { defaultInstallPath } = GlobalConfig.get().getSettings()
     const path = defaultInstallPath.replaceAll("'", '')
     const folderToDelete = `${path}/${folderName}`
     if (existsSync(folderToDelete)) {
@@ -630,7 +632,7 @@ ipcMain.handle('getNumOfGpus', async (): Promise<number> => {
 })
 
 ipcMain.handle('getLatestReleases', async () => {
-  const { checkForUpdatesOnStartup } = GlobalConfig.get().config
+  const { checkForUpdatesOnStartup } = GlobalConfig.get().getSettings()
   if (checkForUpdatesOnStartup) {
     return getLatestReleases()
   } else {
@@ -755,7 +757,9 @@ ipcMain.handle(
   }
 )
 
-ipcMain.handle('getUserInfo', LegendaryUser.getUserInfo)
+ipcMain.handle('getUserInfo', async () => {
+  return LegendaryUser.getUserInfo()
+})
 
 // Checks if the user have logged in with Legendary already
 ipcMain.handle('isLoggedIn', LegendaryUser.isLoggedIn)
@@ -820,9 +824,9 @@ ipcMain.handle('requestSettings', async (event, appName) => {
   }
 
   if (appName === 'default') {
-    return mapOtherSettings(GlobalConfig.get().config)
+    return mapOtherSettings(GlobalConfig.get().getSettings())
   }
-  // We can't use .config since apparently its not loaded fast enough.
+
   const config = await GameConfig.get(appName).getSettings()
   return mapOtherSettings(config)
 })
@@ -841,14 +845,14 @@ ipcMain.handle('writeConfig', (event, { appName, config }) => {
   })
   const oldConfig =
     appName === 'default'
-      ? GlobalConfig.get().config
+      ? GlobalConfig.get().getSettings()
       : GameConfig.get(appName).config
 
   // log only the changed setting
   logChangedSetting(config, oldConfig)
 
   if (appName === 'default') {
-    GlobalConfig.get().config = config as AppSettings
+    GlobalConfig.get().set(config as AppSettings)
     GlobalConfig.get().flush()
     const currentConfigStore = configStore.get('settings', {}) as AppSettings
     configStore.set('settings', { ...currentConfigStore, ...config })
@@ -908,7 +912,7 @@ ipcMain.handle(
     const game = isSideloaded ? getAppInfo(appName) : extGame.getGameInfo()
     const { title } = game
 
-    const { minimizeOnLaunch } = await GlobalConfig.get().getSettings()
+    const { minimizeOnLaunch } = GlobalConfig.get().getSettings()
 
     const startPlayingDate = new Date()
 
@@ -1027,46 +1031,63 @@ ipcMain.on('showItemInFolder', async (e, item) => showItemInFolder(item))
 ipcMain.handle(
   'uninstall',
   async (event, appName, runner, shouldRemovePrefix, shouldRemoveSetting) => {
+    sendFrontendMessage('gameStatusUpdate', {
+      appName,
+      runner,
+      status: 'uninstalling'
+    })
+
     const game = getGame(appName, runner)
 
     const { title } = game.getGameInfo()
 
+    let uninstalled = false
+
     try {
       await game.uninstall()
+      uninstalled = true
     } catch (error) {
       notify({
         title,
         body: i18next.t('notify.uninstalled.error', 'Error uninstalling')
       })
       logError(error, { prefix: LogPrefix.Backend })
-      return
     }
-    if (shouldRemovePrefix) {
-      const { winePrefix } = await game.getSettings()
-      logInfo(`Removing prefix ${winePrefix}`, {
-        prefix: LogPrefix.Backend
-      })
-      // remove prefix if exists
-      if (existsSync(winePrefix)) {
-        rmSync(winePrefix, { recursive: true })
-      }
-    }
-    if (shouldRemoveSetting) {
-      const removeIfExists = (filename: string) => {
-        logInfo(`Removing ${filename}`, { prefix: LogPrefix.Backend })
-        const gameSettingsFile = join(heroicGamesConfigPath, filename)
-        if (existsSync(gameSettingsFile)) {
-          rmSync(gameSettingsFile)
+
+    if (uninstalled) {
+      if (shouldRemovePrefix) {
+        const { winePrefix } = await game.getSettings()
+        logInfo(`Removing prefix ${winePrefix}`, {
+          prefix: LogPrefix.Backend
+        })
+        // remove prefix if exists
+        if (existsSync(winePrefix)) {
+          rmSync(winePrefix, { recursive: true })
         }
       }
+      if (shouldRemoveSetting) {
+        const removeIfExists = (filename: string) => {
+          logInfo(`Removing ${filename}`, { prefix: LogPrefix.Backend })
+          const gameSettingsFile = join(heroicGamesConfigPath, filename)
+          if (existsSync(gameSettingsFile)) {
+            rmSync(gameSettingsFile)
+          }
+        }
 
-      removeIfExists(appName.concat('.json'))
-      removeIfExists(appName.concat('.log'))
-      removeIfExists(appName.concat('-lastPlay.log'))
+        removeIfExists(appName.concat('.json'))
+        removeIfExists(appName.concat('.log'))
+        removeIfExists(appName.concat('-lastPlay.log'))
+      }
+
+      notify({ title, body: i18next.t('notify.uninstalled') })
+      logInfo('Finished uninstalling', { prefix: LogPrefix.Backend })
     }
 
-    notify({ title, body: i18next.t('notify.uninstalled') })
-    logInfo('Finished uninstalling', { prefix: LogPrefix.Backend })
+    sendFrontendMessage('gameStatusUpdate', {
+      appName,
+      runner,
+      status: 'done'
+    })
   }
 )
 
@@ -1077,6 +1098,13 @@ ipcMain.handle('repair', async (event, appName, runner) => {
     })
     return
   }
+
+  sendFrontendMessage('gameStatusUpdate', {
+    appName,
+    runner,
+    status: 'repairing'
+  })
+
   const game = getGame(appName, runner)
   const { title } = game.getGameInfo()
 
@@ -1091,30 +1119,46 @@ ipcMain.handle('repair', async (event, appName, runner) => {
   }
   notify({ title, body: i18next.t('notify.finished.reparing') })
   logInfo('Finished repairing', { prefix: LogPrefix.Backend })
+
+  sendFrontendMessage('gameStatusUpdate', {
+    appName,
+    runner,
+    status: 'done'
+  })
 })
 
 ipcMain.handle(
   'moveInstall',
-  async (event, { appName, path, runner }): StatusPromise => {
+  async (event, { appName, path, runner }): Promise<void> => {
+    sendFrontendMessage('gameStatusUpdate', {
+      appName,
+      runner,
+      status: 'moving'
+    })
+
     const game = getGame(appName, runner)
     const { title } = game.getGameInfo()
     notify({ title, body: i18next.t('notify.moving', 'Moving Game') })
-    let newPath: string
+
     try {
-      newPath = await game.moveInstall(path)
+      const newPath = await game.moveInstall(path)
+      notify({ title, body: i18next.t('notify.moved') })
+      logInfo(`Finished moving ${appName} to ${newPath}.`, {
+        prefix: LogPrefix.Backend
+      })
     } catch (error) {
       notify({
         title,
         body: i18next.t('notify.error.move', 'Error Moving the Game')
       })
       logError(error, { prefix: LogPrefix.Backend })
-      return { status: 'error' }
     }
-    notify({ title, body: i18next.t('notify.moved') })
-    logInfo(`Finished moving ${appName} to ${newPath}.`, {
-      prefix: LogPrefix.Backend
+
+    sendFrontendMessage('gameStatusUpdate', {
+      appName,
+      runner,
+      status: 'done'
     })
-    return { status: 'done' }
   }
 )
 
@@ -1470,7 +1514,7 @@ ipcMain.handle('clipboardReadText', () => clipboard.readText())
 ipcMain.on('clipboardWriteText', (e, text) => clipboard.writeText(text))
 
 ipcMain.handle('getCustomThemes', async () => {
-  const { customThemesPath } = await GlobalConfig.get().getSettings()
+  const { customThemesPath } = GlobalConfig.get().getSettings()
 
   if (!existsSync(customThemesPath)) {
     return []
@@ -1482,7 +1526,7 @@ ipcMain.handle('getCustomThemes', async () => {
 })
 
 ipcMain.handle('getThemeCSS', async (event, theme) => {
-  const { customThemesPath } = await GlobalConfig.get().getSettings()
+  const { customThemesPath } = GlobalConfig.get().getSettings()
 
   const cssPath = path.join(customThemesPath, theme)
 

@@ -15,6 +15,7 @@ import { runLegendaryCommand } from '../library'
 import { LegendaryGame } from '../games'
 import { getGame } from '../../utils'
 import { isValidPrefix, verifyWinePrefix } from '../../launcher'
+import { sendFrontendMessage } from '../../main_window'
 
 const currentVersionPath = join(legendaryConfigPath, 'overlay_version.json')
 const installedVersionPath = join(legendaryConfigPath, 'overlay_install.json')
@@ -88,6 +89,12 @@ async function updateInfo() {
  * @returns The error encountered when installing, if any
  */
 async function install() {
+  sendFrontendMessage('gameStatusUpdate', {
+    appName: eosOverlayAppName,
+    runner: 'legendary',
+    status: isInstalled() ? 'updating' : 'installing'
+  })
+
   const game = LegendaryGame.get(eosOverlayAppName)
   let downloadSize = 0
   // Run download without -y to get the install size
@@ -126,6 +133,12 @@ async function install() {
   )
 
   deleteAbortController(eosOverlayAppName)
+
+  sendFrontendMessage('gameStatusUpdate', {
+    appName: eosOverlayAppName,
+    runner: 'legendary',
+    status: 'done'
+  })
 
   return error
 }
