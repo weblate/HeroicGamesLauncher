@@ -96,7 +96,7 @@
                 "detail": "Güncellemeyi arka planda indirmek istiyor musunuz?",
                 "message": "Yeni bir sürüm var!",
                 "message-finished": "Heroic'i şimdi yeniden başlatmak istiyor musunuz?",
-                "title": "Heroic Games Launcher",
+                "title": "Heroic Games Başlatıcısı",
                 "title-finished": "Güncelleme Tamamlandı"
             }
         },
@@ -957,8 +957,8 @@
         "cancel-remove": "Kaldırmayı iptal et: \"{{name}}\"",
         "confirm-remove": "Kaldırmayı onayla: \"{{name}}\"",
         "confirm-rename": "\"{{oldName}}\"i \"{{newName}}\" olarak adlandırmayı onayla",
-        "rename": "\"{{name}}\" yeniden adlandır",
+        "rename": "Yeniden adlandır: \"{{name}}\"",
         "title": "Kategorileri Yönet",
-        "remove": "\"{{name}}\" kaldır"
+        "remove": "Kaldır: \"{{name}}\""
     }
 }
