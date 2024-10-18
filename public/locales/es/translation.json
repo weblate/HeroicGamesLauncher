@@ -317,7 +317,7 @@
             "fpsLimiterNoFocus": "El límite de velocidad de fotogramas (fps) que debe aplicar gamescope si el juego no está en primer plano.",
             "fpsLimiter": "El número máximo de fotogramas (fps) de gamescope, por ejemplo, es 60",
             "upscaleMethod": "El método de escalado que gamescope debe usar.",
-            "gameWidth": "La resolución para el ancho del juego. Gamescope asume una relación del aspecto de 16:9.",
+            "gameWidth": "La resolución para el ancho del juego. Gamescope asume una relación de aspecto de 16:9.",
             "upscaleWidth": "La resolución utilizada para el ancho por gamescope. Se asume una relación del aspecto de 16:9.",
             "gameHeight": "La resolución para la altura del juego. Gamescope asume una relación de aspecto de 16:9.",
             "upscaleHeight": "La resolución para la altura utilizada por gamescope. Se asume una relación del aspecto de 16:9.",
@@ -404,7 +404,7 @@
         "gog": "Iniciar Sesión en GOG",
         "message": "Inicie sesión en sus plataformas. Puede iniciar sesión en más de una a la vez.",
         "amazon": "Inicio de sesión en Amazon",
-        "old-mac": "Tu versión de macOS es {{version}}, macOS 12 o posterior es requerido para iniciar sesión."
+        "old-mac": "Tu versión de macOS es {{version}}. Se requiere macOS 12 o posterior para ingresar a su cuenta."
     },
     "message": {
         "sync": "Sincronización completa",
@@ -499,7 +499,7 @@
             "title": "Comando Wrapper:"
         },
         "gamescope": {
-            "upscaleHeight": "Altura de reescala",
+            "upscaleHeight": "Altura de reescalado",
             "nis": "NVIDIA Image Scale (NIS)",
             "borderless": "Sin bordes",
             "fpsLimiter": "Limitador de FPS",
@@ -559,9 +559,9 @@
         "addgamestosteam": "Agregar juegos a Steam automáticamente",
         "alt-gogdl-bin": "Elige un binario de GOGDL alternativo para usar",
         "alt-legendary-bin": "Elige un binario de Legendary alternativo",
-        "autodxvk": "Autoinstalar/Actualizar DXVK en el Prefijo",
+        "autodxvk": "Instalar/Actualizar automáticamente DXVK en el Prefijo",
         "autosync": "Autosincronizar guardados",
-        "autovkd3d": "Autoinstalar/Actualizar VKD3D en el Prefijo",
+        "autovkd3d": "Instalar/Actualizar automáticamente VKD3D en el Prefijo",
         "change-target-exe": "Seleccione un EXE alternativo para ejecutar",
         "checkForUpdatesOnStartup": "Comprobar actualizaciones de Heroic al iniciar",
         "crossover-version": "Versión crossover/vino",
@@ -701,8 +701,8 @@
         "disable_logs": "Deshabilitar registros",
         "addgamestoapplications": "Agregar juegos a Aplicaciones automáticamente",
         "showMetalOverlay": "Mostrar superposición de estadísticas",
-        "alt-nile-bin": "Elige un binario alternativo de Nile",
-        "autodxvknvapi": "Autoinstalar/Actualizar DXVK-NVAPI en el Prefijo",
+        "alt-nile-bin": "Elija un binario alternativo de Nile",
+        "autodxvknvapi": "Instalar/Actualizar automáticamente DXVK-NVAPI en el Prefijo",
         "experimental_features": {
             "enableNewShinyFeature": "Una nueva función brillante",
             "enableNewDesign": "Nuevo diseño",
