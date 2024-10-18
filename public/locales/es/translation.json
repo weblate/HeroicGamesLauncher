@@ -165,7 +165,7 @@
             },
             "snap": {
                 "checkbox": "No mostrar este mensaje de nuevo",
-                "title": "Heroic se ejecuta como Snap",
+                "title": "Heroic se ejecuta como un Snap",
                 "message": "Algunas características no están disponibles en la versión Snap de la aplicación por ahora y estamos tratando de arreglarlo.{{newLine}}Las limitaciones actuales son: {{newLine}}Heroic no podrá encontrar Proton desde Steam o Wine desde Lutris.{{newLine}}{{newLine}}Gamescope, GameMode y MangoHud tampoco funcionarán ya que Heroic no puede tener acceso a ellos.{{newLine}}{{newLine}}Para tener acceso a esta característica por favor instala Heroic como Flatpak, DEB o desde la AppImage."
             }
         },
@@ -319,7 +319,7 @@
             "upscaleMethod": "El método de escalado que gamescope debe usar.",
             "gameWidth": "La resolución para el ancho utilizada por el juego. Gamescope asume una relación del aspecto de 16:9.",
             "upscaleWidth": "La resolución utilizada para el ancho por gamescope. Se asume una relación del aspecto de 16:9.",
-            "gameHeight": "La resolución para la altura utilizada por el juego. Gamescope asume una relación del aspecto de 16:9.",
+            "gameHeight": "La resolución para la altura del juego. Gamescope asume una relación del aspecto de 16:9.",
             "upscaleHeight": "La resolución para la altura utilizada por gamescope. Se asume una relación del aspecto de 16:9.",
             "additionalOptions": "Variables de línea de comandos adicionales para gamescope."
         },
