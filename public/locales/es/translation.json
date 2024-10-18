@@ -317,7 +317,7 @@
             "fpsLimiterNoFocus": "El límite de velocidad de fotogramas (fps) que debe aplicar gamescope si el juego no está en primer plano.",
             "fpsLimiter": "El número máximo de fotogramas (fps) de gamescope, por ejemplo, es 60",
             "upscaleMethod": "El método de escalado que gamescope debe usar.",
-            "gameWidth": "La resolución para el ancho utilizada por el juego. Gamescope asume una relación del aspecto de 16:9.",
+            "gameWidth": "La resolución para el ancho del juego. Gamescope asume una relación del aspecto de 16:9.",
             "upscaleWidth": "La resolución utilizada para el ancho por gamescope. Se asume una relación del aspecto de 16:9.",
             "gameHeight": "La resolución para la altura del juego. Gamescope asume una relación de aspecto de 16:9.",
             "upscaleHeight": "La resolución para la altura utilizada por gamescope. Se asume una relación del aspecto de 16:9.",
