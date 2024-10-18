@@ -929,7 +929,7 @@
         "maximize": "Maximizar la ventana",
         "minimize": "Minimizar la ventana",
         "close": "Cerrar",
-        "restore": "Restaurar la ventana"
+        "restore": "Restablecer la ventana"
     },
     "category-settings": {
         "remove-category": "Eliminar la categoría",
