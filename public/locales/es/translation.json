@@ -26,7 +26,7 @@
             "title": "Caché borrado"
         },
         "choose": "Seleccionar",
-        "choose-egs-prefix": "Elige el prefijo de Wine donde está instalado EGS",
+        "choose-egs-prefix": "Elija el Prefix de Wine donde está instalado EGS",
         "choose-gogdl-binary": "Seleccionar binario de GOGDL (requiere reiniciar)",
         "choose-legendary-binary": "Seleccione el binario de Legendary",
         "customWine": "Selecciona un binario de Wine o Proton",
@@ -160,7 +160,7 @@
             "sideload": {
                 "confirmExit": {
                     "message": "Todo progreso no guardado podría perderse",
-                    "title": "¿Seguro que quieres salir?"
+                    "title": "¿Estás seguro de que quieres salir?"
                 }
             },
             "snap": {
@@ -621,8 +621,41 @@
             "show-in-folder": "Mostrar el archivo de registro en la carpeta",
             "join-heroic-discord": "Únase a nuestro Discord",
             "upload": {
-                "actions": "Acciones"
-            }
+                "actions": "Acciones",
+                "button": "Subir archivo de registro",
+                "confirm": {
+                    "content": "¿Está seguro que quiere cargar \"{{name}}\"?",
+                    "title": "¿Cargar archivo de registro?"
+                },
+                "delete": "Pedir borrado de registro",
+                "done": {
+                    "content": "Subido a {{url}} (URL copiada al portapapeles)",
+                    "title": "Subida completada"
+                },
+                "error": {
+                    "content": "Falló la subida del registro. Ver el registro general de Heroic para detalles",
+                    "title": "Error al subir"
+                },
+                "header": "Se subieron los registros",
+                "hours-ago": "Subido {{hoursAgo, relativetime(hours)}}",
+                "minutes-ago": "Subido {{minutesAgo, relativetime(minutes)}}",
+                "no-files": "No se subieron archivos de registro",
+                "open": "Abrir carga de registros",
+                "title": "Título del registro",
+                "upload-date": "Fecha de subida",
+                "uploading": {
+                    "content": "Subiendo archivo de registro...",
+                    "title": "Subiendo"
+                }
+            },
+            "descriptiveNames": {
+                "nile": "Registro de Amazon / Nile",
+                "game-log": "Registro de juego de {{gameTitle}}",
+                "gog": "Registro de GOG",
+                "heroic": "Registro general de Heroic",
+                "legendary": "Registro de Epic Games / Legendary"
+            },
+            "show-uploads": "Mostrar los registros subidos"
         },
         "mangohud": "Habilitar Mangohud (es necesario instalar Mangohud)",
         "manualsync": {
@@ -867,7 +900,7 @@
         "size": "Tamaño"
     },
     "externalLink": {
-        "dontAskAgain": "no vuelvas a preguntar",
+        "dontAskAgain": "No volver a preguntar",
         "warning": "Está a punto de abrir un enlace externo."
     },
     "wiki_info": {
