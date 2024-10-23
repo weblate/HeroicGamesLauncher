@@ -624,19 +624,36 @@
                 "actions": "Åtgärd",
                 "button": "Ladda upp loggfil",
                 "confirm": {
-                    "title": "Ladda upp loggfil?"
+                    "title": "Ladda upp loggfil?",
+                    "content": "Vill du verkligen ladda upp \"{{name}}\"?"
                 },
                 "done": {
-                    "title": "Uppladdning klar"
+                    "title": "Uppladdning klar",
+                    "content": "Uppladdad till {{url}} (URL har kopierats till ditt urklipp)"
                 },
                 "error": {
-                    "title": "Uppladdning misslyckades"
+                    "title": "Uppladdning misslyckades",
+                    "content": "Misslyckades att ladda upp loggfil. Kontrollera Heroics allmänna logg för detaljer"
                 },
-                "header": "Ladda upp loggfil?"
+                "header": "Ladda upp loggfil?",
+                "delete": "Begär borttagning av loggfil",
+                "hours-ago": "Uppladdad {{hoursAgo, relativetime(hours)}}",
+                "minutes-ago": "Uppladdad {{minutesAgo, relativetime(minutes)}}",
+                "no-files": "Inga loggfiler laddades upp",
+                "open": "Öppna uppladdning av loggfil",
+                "title": "Loggtitel",
+                "upload-date": "Uppladdningsdatum",
+                "uploading": {
+                    "content": "Laddar upp loggfil...",
+                    "title": "Laddar upp"
+                }
             },
             "descriptiveNames": {
                 "game-log": "Spellogg för {{gameTitle}}",
-                "gog": "GOG-logg"
+                "gog": "GOG-logg",
+                "heroic": "Allmän Heroic logg",
+                "legendary": "Epic Games / Legendary logg",
+                "nile": "Amazon / Nile logg"
             },
             "show-uploads": "Visa uppladdade loggfiler"
         },
